@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Memory Cards</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <button class="clear"><i class="far fa-trash-alt"></i></button>
+
+    <button class="show"><i class="far fa-plus-square"></i></button>
+
+    <div class="cards"></div>
+
+    <nav>
+        <p class="current"></p>
+        <button class="prev"><i class="fas fa-chevron-left"></i></button>
+        <button class="next"><i class="fas fa-chevron-right"></i></button>
+    </nav>
+
+    <form>
+        <button class="close"><i class="fas fa-times"></i></button>
+
+        <label for="question">Question</label>
+        <input type="text" id="question" placeholder="Enter question">
+
+        <label for="answer">Answer</label>
+        <input type="text" id="answer" placeholder="Enter answer">
+
+        <button class="add"><i class="fas fa-plus"></i></button>
+    </form>
+</body>
+
+</html>

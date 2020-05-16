@@ -1,0 +1,159 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    background: radial-gradient(circle, lightgreen, darkgreen);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: helvetica;
+    overflow: hidden;
+}
+
+button {
+    font-size: 2em;
+    outline: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.clear {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+.show,
+.add {
+    padding: 20px 0;
+}
+
+.cards {
+    perspective: 1000px;
+    position: relative;
+    width: 500px;
+    height: 300px;
+}
+
+.card {
+    position: absolute;
+    opacity: 0;
+    font-size: 2em;
+    width: 100%;
+    height: 100%;
+    transform: translateX(50%) rotateY(-10deg);
+    transition: transform .4s ease, opacity .4s ease;
+    user-select: none;
+}
+
+.card.active {
+    opacity: 1;
+    transform: translateX(0) rotateY(0deg);
+    cursor: pointer;
+}
+
+.card.left {
+    transform: translateX(-50%) rotateY(10deg);
+}
+
+.inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 4px;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, .3);
+    transform-style: preserve-3d;
+    transition: transform .4s ease;
+}
+
+.card.swap .inner {
+    transform: rotateX(180deg);
+}
+
+.front,
+.back {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(skyblue, steelblue);
+    backface-visibility: hidden;
+}
+
+.front {
+    transform: rotateX(0deg);
+}
+
+.back {
+    transform: rotateX(180deg);
+}
+
+.front::after,
+.back::after {
+    content: '\f021';
+    font-family: 'Font Awesome 5 Free';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-weight: bold;
+    font-size: .6em;
+    color: rgba(255,255,255,.6);
+    text-shadow: 0 0 1px #999;
+}
+
+nav {
+    margin: 20px 0;
+    position: relative;
+}
+
+nav button {
+    font-size: 1.2em;
+    margin: 0 4em;
+}
+
+nav p {
+    text-align: center;
+    font-size: 1.2em;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+form {
+    opacity: 0;
+    z-index: -1;
+    background: linear-gradient(hotpink, darkorange);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: .2s ease;
+}
+
+form.show {
+    opacity: 1;
+    z-index: 1;
+}
+
+label {
+    margin: 20px 0 10px;
+}
+
+input {
+    padding: .8em;
+    width: 500px;
+    font-size: 1em;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+}
