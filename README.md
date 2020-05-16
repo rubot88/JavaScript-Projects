@@ -1,6 +1,6 @@
 Demos <br>
 Audio Progress and Visualization - https://codepen.io/igor_agapov/pen/abzKLvM <br>
-Brekout - https://codepen.io/igor_agapov/pen/NWGObaZ <br>
+Breakout - https://codepen.io/igor_agapov/pen/NWGObaZ <br>
 Calculator - https://codepen.io/igor_agapov/pen/wvKryPO <br>
 Currency Converter - https://codepen.io/igor_agapov/pen/xxwyqqx <br>
 Form Validation - https://codepen.io/igor_agapov/pen/gOaBmGx <br>
