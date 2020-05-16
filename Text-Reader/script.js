@@ -6,6 +6,8 @@ const message = new SpeechSynthesisUtterance()
 
 let voices = []
 
+textarea.value = 'Мы — источник веселья и скорби рудник. Мы — вместилище скверны и чистый родник. Человек, словно в зеркале мир, — многолик. Он ничтожен — и он же безмерно велик!'
+
 function getVoices() {
     voices = speechSynthesis.getVoices()
 
