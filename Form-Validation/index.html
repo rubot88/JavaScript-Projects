@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Form Validation</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <form>
+        <h3>Sign Up</h3>
+        <figure>
+            <span><i class="far fa-user"></i></span>
+            <figcaption>Name</figcaption>
+            <input type="text">
+            <span class="error-msg"></span>
+        </figure>
+        <figure>
+            <span><i class="far fa-envelope"></i></span>
+            <figcaption>Email</figcaption>
+            <input type="email">
+            <span class="error-msg"></span>
+        </figure>
+        <figure>
+            <span><i class="fas fa-key"></i></span>
+            <figcaption>Password</figcaption>
+            <input type="password" class="password">
+            <span class="error-msg"></span>
+        </figure>
+        <figure>
+            <span><i class="fas fa-lock"></i></span>
+            <figcaption>Confirm</figcaption>
+            <input type="password" class="password2">
+            <span class="error-msg"></span>
+        </figure>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+
+</html>
