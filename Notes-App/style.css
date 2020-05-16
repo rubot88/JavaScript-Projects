@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    background: radial-gradient(circle, skyblue, steelblue);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Stylish', sans-serif;
+    font-size: 1.2em;
+}
+
+.box,
+.list {
+    margin: 0 .4em;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(lightyellow, darkorange);
+    border-radius: 5px;
+    padding: .6em;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .6)
+}
+
+img {
+    padding: .4em;
+    width: 100%;
+}
+
+h3 {
+    user-select: none;
+}
+
+p {
+    margin: .2em 0;
+    font-size: 1.1em;
+}
+
+textarea {
+    width: 300px;
+    height: 80px;
+    padding: .4em;
+    border-radius: 5px;
+    font-size: 1em;
+    resize: none;
+    margin-bottom: .7em;
+}
+
+input[type="date"] {
+    width: 150px;
+    text-align: center;
+    margin-bottom: 3em;
+}
+
+button {
+    width: 140px;
+    padding: .4em;
+    margin: .4em 0;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(lightgreen, darkgreen);
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: .8em;
+    text-transform: uppercase;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .5);
+}
+
+button:active {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .7);
+}
+
+button:focus,
+textarea:focus,
+input:focus {
+    outline: none;
+}
+
+.note {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-style: italic;
+    user-select: none;
+    word-break: break-all;
+    position: relative;
+}
+
+.note p {
+    width: 240px;
+    font-size: 1em;
+}
+
+.note span {
+    display: block;
+    cursor: pointer;
+    font-weight: bold;
+    font-style: normal;
+}
+
+.info {
+    color: blue;
+}
+
+.notify {
+    color: #ddd;
+    font-size: .9em;
+    font-weight: normal !important;
+    text-align: center;
+    line-height: 25px;
+    border-radius: 5px;
+    width: 130px;
+    height: 25px;
+    position: absolute;
+    top: -10px;
+    left: -65px;
+    background: rgba(0, 0, 0, .6);
+    transition: .2s;
+    opacity: 0;
+}
+
+.show {
+    opacity: 1;
+}
+
+.info.null,
+.notify.null {
+    display: none;
+}
+
+.complete {
+    padding: 0 .4em;
+    color: green;
+}
+
+.delete {
+    padding-left: .4em;
+    color: red;
+}
+
+.line-through {
+    text-decoration: line-through;
+}
