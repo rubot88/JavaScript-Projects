@@ -1,0 +1,107 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.app {
+    min-height: 100vh;
+    background: radial-gradient(circle, skyblue, steelblue);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: helvetica;
+    color: #222;
+}
+
+form {
+    padding: .5em;
+}
+
+input[type="text"] {
+    padding: .4em .6em;
+    text-align: center;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, .6);
+}
+
+input[type="submit"],
+button {
+    padding: .4em .6em;
+    border: none;
+    border-radius: 3px;
+    background: linear-gradient(lightgreen, darkgreen);
+    cursor: pointer;
+}
+
+button {
+    margin: 0 .5em .5em;
+}
+
+h3 {
+    margin: 1em 0;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 1px 1px #ddd;
+    user-select: none;
+}
+
+.meals {
+    padding: 0 1em;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1em;
+    text-align: center;
+}
+
+@media(min-width:1280px) {
+    .meals {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+img {
+    width: 100%;
+    border-radius: 6px;
+}
+
+figure {
+    font-size: .9em;
+    cursor: pointer;
+    transition: .2s;
+}
+
+figure:hover {
+    transform: scale(.95);
+}
+
+.meal {
+    padding: 1em;
+}
+
+.meal img {
+    display: block;
+    margin: auto;
+    max-width: 480px;
+}
+
+p {
+    margin: 1em;
+    line-height: 1.5em;
+}
+
+p:last-of-type {
+    text-indent: 1.5em;
+    text-align: justify;
+}
+
+ul {
+    list-style: none;
+    text-align: center;
+}
+
+li {
+    margin: .5em 0;
+}
