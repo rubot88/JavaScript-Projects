@@ -1,0 +1,82 @@
+.my-modal {}
+
+.my-modal.open .modal-overlay,
+.my-modal.open .modal-window {
+    opacity: 1;
+    z-index: 1;
+}
+
+.my-modal.hide .modal-overlay,
+.my-modal.hide .modal-window {
+    opacity: 1;
+    z-index: 1;
+}
+
+.my-modal.open .modal-window {
+    transform: translateY(100px);
+}
+
+.my-modal.open .modal-overlay {
+    background: rgba(0, 0, 0, .5);
+}
+
+.my-modal.hide .modal-window {
+    transform: translateY(-200px);
+}
+
+.my-modal.hide .modal-overlay {
+    background: rgba(0, 0, 0, 0);
+}
+
+.modal-window,
+.modal-overlay {
+    opacity: 0;
+    z-index: -1;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background .2s ease-in;
+}
+
+.modal-window {
+    width: 600px;
+    border-radius: 5px;
+    background: #fff;
+    margin: 0 auto;
+    transform: translateY(-200px);
+    transition: transform .2s ease-in;
+}
+
+.modal-header {
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+}
+
+.modal-close {
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 10px;
+}
+
+.modal-body p {
+    margin: 0 0 5px;
+}
+
+.modal-footer {
+    padding: 5px 10px;
+    border-top: 1px solid #eee;
+}
