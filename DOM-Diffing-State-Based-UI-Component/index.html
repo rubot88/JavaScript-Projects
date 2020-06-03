@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DOM Diffing State-Based UI Component</title>
+</head>
+
+<body>
+    <div class="app"></div>
+
+    <script>
+        const stringToHTML = function(str) {
+            const parser = new DOMParser()
+            const doc = parser.parseFromString(str, 'text/html')
+            return doc.body
+        }
+
+        const handler = function(instance) {
+            return {
+                get: function(obj, prop) {
+                    if (['[object Object]', '[object Array]'].indexOf(Object.prototype.toString.call(obj[prop])) > -1) {
+                        return new Proxy(obj[prop], handler(instance))
+                    }
+                    return obj[prop]
+                },
+                set: function(obj, prop, value) {
+                    obj[prop] = value
+                    debounceRender(instance)
+                    return true
+                },
+                deleteProperty: function(obj, prop) {
+                    delete obj[prop]
+                    debounceRender(instance)
+                    return true
+                }
+            }
+        }
+
+        const Rue = function(options) {
+            const _this = this
+            _this.elem = document.querySelector(options.selector)
+            const _data = new Proxy(options.data, handler(this))
+            _this.template = options.template
+            _this.debounce = null
+
+            Object.defineProperty(this, 'data', {
+                get: function() {
+                    return _data
+                },
+                set: function(data) {
+                    _data = new Propxy(data, handler(_this))
+                    debounce(_this)
+                    return true
+                }
+            })
+        }
+
+        const debounceRender = function(instance) {
+            if (instance.debounce) {
+                window.cancelAnimationFrame(instance.debounce)
+            }
+            instance.debounce = window.requestAnimationFrame(function() {
+                instance.render()
+            })
+        }
+
+        const app = new Rue({
+            selector: '.app',
+            data: {
+                heading: 'My Todos',
+                todos: ['Sleep', 'Sleep']
+            },
+            template: function(props) {
+                return `
+				<h1>${props.heading}</h1>
+				<ul>
+					${props.todos.map(function(todo){
+						return `<li>${todo}</li>`
+					}).join('')}
+				</ul>`
+            }
+        })
+
+        Rue.prototype.render = function() {
+            const templateHTML = stringToHTML(this.template(this.data))
+
+            diff(templateHTML, this.elem)
+        }
+
+        const diff = function(template, elem) {
+            const domNodes = Array.prototype.slice.call(elem.childNodes)
+            const templateNodes = Array.prototype.slice.call(template.childNodes)
+
+            let count = domNodes.length - templateNodes.length
+            if (count > 0) {
+                for (; count > 0; count--) {
+                    domNodes[domNodes.length - count].parentNode.removeChild(domNodes[domNodes.length - count])
+                }
+            }
+            templateNodes.forEach(function(node, index) {
+                if (!domNodes[index]) {
+                    elem.appendChild(node.cloneNode(true))
+                    return;
+                }
+
+                if (getNodeType(node) !== getNodeType(domNodes[index])) {
+                    domNodes[index].parentNode.replaceChild(node.cloneNode(true), domNodes[index])
+                    return;
+                }
+
+                const templateContent = getNodeContent(node)
+                if (templateContent && templateContent !== getNodeContent(domNodes[index])) {
+                    domNodes[index].textContent = templateContent
+                }
+
+                if (domNodes[index].childNodes.length > 0 && node.childNodes.length < 1) {
+                    domNodes[index].innerHTML = ''
+                    return;
+                }
+
+                if (domNodes[index].childNodes.length < 1 && node.childNodes.length > 0) {
+                    const fragment = document.createDocumentFragment()
+                    diff(node, fragment)
+                    domNodes[index].appendChild(fragment)
+                    return;
+                }
+
+                if (node.childNodes.length > 0) {
+                    diff(node, domNodes[index])
+                }
+            })
+        }
+
+        const getNodeType = function(node) {
+            if (node.nodeType === 3) return 'text'
+            if (node.nodeType === 8) return 'comment'
+            return node.tagName.toLowerCase()
+        }
+
+        const getNodeContent = function(node) {
+            if (node.childNodes && node.childNodes.length > 0) return null
+            return node.textContent
+        }
+
+        app.render()
+
+        setTimeout(() => app.data.todos.push('Sleep'), 1000)
+        setTimeout(() => app.data.todos.push('Sleep'), 2000)
+        setTimeout(() => app.data.todos.push('And sleep... zzzzz'), 3000)
+    </script>
+</body></html>
