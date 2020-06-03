@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JSX Renderer</title>
+</head>
+
+<body>
+    <script>
+        // let foo = <div id="foo">Hello!</div>
+        // let foo = h('div', {id: 'foo'}, 'Hello!')
+
+        function h(nodeName, attributes, ...args) {
+            let children = args.length ? [].concat(...args) : null
+            return {
+                nodeName,
+                attributes,
+                children
+            }
+        }
+
+        function render(vnode) {
+            if (typeof vode === 'string') return document.createTextNode(vnode)
+
+            let n = document.createElement(vnode.nodeName)
+
+            let a = vnode.attributes || {}
+            Object.keys(a).forEach(k => n.setAttribute(k, a[k]))
+
+            (vnode.children || []).forEach(c => n.appendChild(render(c)))
+
+            return n
+        }
+
+        // let vdom = <div id="foo">Hello!</div>
+        // let dom = render(vdom)
+        // document.body.append(dom)
+
+        // let items = ['foo', 'bar', 'baz']
+        // function item(text) {
+        // 	return <li>{text}</li>
+        // }
+        // let list = render(
+        // 	<ul>
+        // 		{items.map(item)}
+        // 	</ul>
+        // )
+        // document.body.append(list)
+
+        const ITEMS = 'hello world'.split(' ')
+        let list = items => item.map(p => <li>{p}</li>)
+
+        let vdom = (
+             <div id="foo">
+             	<p>simple JSX DOM renderer</p>
+             	<ul>{ list(ITEMS) }</ul>
+             </div>
+        )
+
+        let dom = render(vdom)
+
+        document.body.append(dom)
+
+        let json = JSON.stringify(vdom, null, ' ')
+
+        document.body.append(
+             render(<pre id="vdom">{ json }</pre>)
+        )
+
+    </script>
+</body>
+
+</html>
