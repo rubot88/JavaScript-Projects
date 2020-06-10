@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Virtual DOM</title>
+</head>
+<body>
+	<button id="reload">reload</button>
+	<div id="root"></div>
+
+	<!-- <ul class="list">
+		<li>item 1</li>
+		<li>item 2</li>
+	</ul> -->
+	
+	<script>
+		{ type: 'ul', props: { 'class': 'list' }, children: [
+			{ type: 'li', props: {}, children: ['item 1'] },
+			{ type: 'li', props: {}, children: ['item 2'] }
+		] }
+
+		/** @jsx h */
+		function h(type, props, ...children) {
+			return { type, props, children }
+		}
+
+		h('ul', { 'class', 'list' },
+			h('li', {}, 'item 1'),
+			h('li', {}, 'item 2')
+		)
+
+		// React.createElement(‘ul’, { className: ‘list’ },
+		//   React.createElement(‘li’, {}, ‘item 1’),
+		//   React.createElement(‘li’, {}, ‘item 2’),
+		// )
+
+		// const a = (
+		// 	<ul class="list">
+		// 		<li>item 1</li>
+		// 		<li>item 2</li>
+		// 	</ul>
+		// )
+
+		const a = (
+			h('ul', { 'class'L 'list' },
+				h('li', {}, 'item 1'),
+				h('li', {}, 'item 2')
+			)
+		)
+
+		const a = (
+			{ type: 'ul', props: { 'class': 'list' }, children: [
+				{ type: 'li', props: {}, children: ['item 1'] },
+				{ type: 'li', props: {}, children: ['item 2'] }
+			] }
+		)
+
+		// next step
+		function createElement(node) {
+			if (typeof node === 'string') {
+				return document.createTextNode(node)
+			}
+			return document.createElement(node.type)
+		}
+
+		function createElement(node) {
+			if (typeof node === 'string') {
+				return document.createTextNode(node)
+			}
+			const $el = document.createElement(node.type)
+			node.children
+				.map(createElement)
+				.forEach($el.appendChild.bind($el))
+			return $el
+		}
+
+		// const a = (
+		// 	<ul class="list">
+		// 		<li>item 1</li>
+		// 		<li>item 2</li>
+		// 	</ul>
+		// )
+
+		const $root = document.getElementById('root')
+		$root.appendChild(createElement(a))
+
+		// next step
+		// handling changes
+		function udpateElement($parent, newNode, oldNode) {
+			if (!oldNode) {
+				$parent.appendChild(createElement(newNode))
+			}
+		}
+
+		function udpateElement($parent, newNode, oldNode, index = 0) {
+			if (!oldNode) {
+				$parent.appendChild(createElement(newNode))
+			} else if(!newNode) {
+				$parent.removeChild($parent.childNodes[index])
+			}
+		}
+
+		function changed(node1, node2) {
+			return typeof node1 !== typeof node2
+			|| typeof node1 === 'string' && node1 !== node2
+			|| node1.type !== node2.type
+		}
+
+		function udpateElement($parent, newNode, oldNode, index = 0) {
+			if (!oldNode) {
+				$parent.appendChild(createElement(newNode))
+			} else if(!newNode) {
+				$parent.removeChild($parent.childNodes[index])
+			} else if(changed(newNode, oldNode)) {
+				$parent.replaceChild(
+					createElement(newNode),
+					$parent.childNodes[index]
+				)
+			} else if(newNode.type) {
+				const newLength = newNode.children.length
+				const oldLength = oldNode.children.length
+				for (let i = 0; i < newLength || i < oldLength; i++) {
+					udpateElement(
+						$parent.childNodes[index],
+						newNode.children[i],
+						oldNode.children[i],
+						i
+					)
+				}
+			}
+		}
+
+		// const a = (
+		// 	<ul>
+		// 		<li>item 1</li>
+		// 		<li>item 2</li>
+		// 	</ul>
+		// )
+
+		// const b = (
+		// 	<ul>
+		// 		<li>item 1</li>
+		// 		<li>hello</li>
+		// 	</ul>
+		// )
+
+		const $root = document.getElementById('root')
+		const $reload = document.getElementById('reload')
+
+		udpateElement($root, a)
+		$reload.addEventListener('click', () => { udpateElement($root, b, a) })
+
+		// final code https://jsfiddle.net/aio350/ano3s4t0/
+
+		// next step
+		// props & events
+		function h(type, props, ...children) {
+			return { type props: props || {}, children}
+		}
+
+		// <ul className="list" style="list-style: none"></ul>
+
+		{
+			type: 'ul',
+			props: { className: 'list', style: 'list-tyle: none' },
+			children: []
+		}
+
+		// one prop
+		function setProp($target, name, value) {
+			$target.setAttribute(name, value)
+		}
+
+		// all props
+		function setProps($target, props) {
+			Object.keys(props).forEach(name => {
+				setProp($target, name, props[name])
+			})
+		}
+
+		function createElement(node) {
+			if (typeof node === 'string') {
+				return document.createTextNode(node)
+			}
+			const $el = document.createElement(node.type)
+			setProps($el, node.props)
+			node.children
+				.map(createElement)
+				.forEach($el.appendChild.bind($el))
+			return $el
+		}
+
+		// we need to handle className in setProp()
+		// we also need to handle boolean attributes like checked or disabled
+		// <input type="checkbox" checked={false}>
+		function setBooleanProp($target, name, value) {
+			if(value) {
+				$target.setAttribute(name, value)
+				$target[name] = true
+			} else {
+				$target[name] = false
+			}
+		}
+
+		// custom props
+		function isCustomProp(name) {
+			return false
+		}
+
+		function setProp($target, name, value) {
+			if(isCustomProp(name)) { return }
+			else if(name === 'className') {
+				$target.setAttribute('class', value)
+			} else if(typeof value === 'boolean') {
+				setBooleanProp($target, name, value)
+			} else {
+				$target.setAttribute(name, value)
+			}
+		}
+
+		// const f = (
+		// 	<ul style="list-style: none;">
+		// 		<li className="item">item 1</li>
+		// 		<li>
+		// 			<input type="checked" checked={true}>
+		// 			<input type+"text" disabled={false}>
+		// 		</li>
+		// 	</ul>
+		// )
+
+		const $root = document.getElementById('root')
+		$root.appendChild(createElement(f))
+
+		// next step
+		// difing props
+		function removeBooleanProp($target, name) {
+			$target.removeAttribute(name)
+			$target[name] = false
+		}
+
+		function removeProp($target, name, value) {
+			if(isCustomProp(name)) { return }
+			else if(name === 'className') {
+				$target. removeAttribute('class')
+			} else if(typeof value === 'boolean') {
+				removeBooleanProp($target, name)
+			} else {
+				$target.removeAttribute(name)
+			}
+		}
+
+		function updateProp($target, name, newVal, oldVal) {
+			if(!newVal) {
+				removeProp($target, name, oldVal)
+			} else if(!oldVal || newVal !== oldVal) {
+				setProp($target, name, newVal)
+			}
+		}
+
+		function updateProps($target, newProps, oldProps = {}) {
+			const props = Object.assign({}, newProps, oldProps)
+			Object.keys(props).forEach(name => {
+				updateProp($target, name, newProps[name], oldProps[name])
+			})
+		}
+
+		function updateElements($parent, newNode, oldNode, index = 0) {
+			...
+			} else if (newNode.type) {
+				updateProps(
+					$parent.childNodes[index],
+					newNode.props,
+					oldNode.props
+				)
+
+				...
+			}
+		}
+
+		// final code https://jsfiddle.net/aio350/gtrv2bLm/1/
+
+		// next step
+		// events
+		// <button onClick={() => alert('hi')}></button>
+
+		function isEventProp(name) {
+			return /^on/.test(name)
+		}
+
+		function extractEventName(name) {
+			return name.slice(2).toLowerCase()
+		}
+
+		function isCustomProp(name) {
+			return isEventProp(name)
+		}
+
+		function addEventListeners($target, props) {
+			Object.keys(props).forEach(name => {
+				if(isEventProp(name)) {
+					$target.addEventListener(
+						extractEventName(name),
+						props[name]
+					)
+				}
+			})
+		}
+
+		function createElement(node) {
+			if(typeof node === 'string') {
+				return document.createTextNode(node)
+			}
+			const $el = document.createElement(node.type)
+			setProps($el, node.props)
+			addEventListeners($el, node.props)
+			node.children
+				.map(createElement)
+				.forEach($el.appendChild.bind($el))
+			return $el
+		}
+
+		// re-adding events
+		function changed(node1, node2) {
+			return typeof node1 !== typeof node2
+				|| typeof node1 === 'string' && node1 !== node2
+				|| node1.type !== node2.type
+				|| node.props.forceUpdate
+		}
+
+		function isCustomProp(name) {
+			return isEventProp(name) || name === 'forceUpdate'
+		}
+
+		// final code https://jsfiddle.net/aio350/zva6et1x/
+	</script>
+</body>
+</html>
